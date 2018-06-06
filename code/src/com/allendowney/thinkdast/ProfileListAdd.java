@@ -82,7 +82,7 @@ public class ProfileListAdd {
 			}
 		};
 		int startN = 4000;
-		int endMillis = 3000;
+		int endMillis = 2000;
 		runProfiler("LinkedList add beginning", timeable, startN, endMillis);
 	}
 
