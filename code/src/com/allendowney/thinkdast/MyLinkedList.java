@@ -30,7 +30,6 @@ public class MyLinkedList<E> implements List<E> {
 			this.data = data;
 			this.next = null;
 		}
-		@SuppressWarnings("unused")
 		public Node(E data, Node next) {
 			this.data = data;
 			this.next = next;
@@ -62,7 +61,7 @@ public class MyLinkedList<E> implements List<E> {
 		mll.add(3);
 		System.out.println(Arrays.toString(mll.toArray()) + " size = " + mll.size());
 
-		mll.remove(new Integer(2));
+		mll.remove(Integer.valueOf(2));
 		System.out.println(Arrays.toString(mll.toArray()) + " size = " + mll.size());
 	}
 
@@ -82,7 +81,20 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public void add(int index, E element) {
-		//TODO: FILL THIS IN!
+		if (index < 0 || index > size) {
+			throw new IndexOutOfBoundsException();
+		}
+		Node curr = new Node(null, head);
+		// find (index-1)th node 
+		for (int i=0; i<index; i++) {
+			curr = curr.next;
+		}
+		Node newNode = new Node(element, curr.next);
+		curr.next = newNode;
+		// change head
+		if(index == 0) head = newNode;
+		size++;
+		return;
 	}
 
 	@Override
@@ -143,7 +155,11 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public int indexOf(Object target) {
-		//TODO: FILL THIS IN!
+		Node curr = head;
+		for (int i=0; i<size; i++) {
+			if (equals(target, curr.data)) return i;
+			else curr = curr.next;
+		}
 		return -1;
 	}
 
@@ -168,6 +184,8 @@ public class MyLinkedList<E> implements List<E> {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked") 
+	
 	public Iterator<E> iterator() {
 		E[] array = (E[]) toArray();
 		return Arrays.asList(array).iterator();
@@ -208,8 +226,14 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public E remove(int index) {
-		//TODO: FILL THIS IN!
-		return null;
+		Node old = getNode(index);
+		if(index == 0) head = old.next;
+		else {
+			Node prevOld = getNode(index-1);
+			prevOld.next = old.next;
+		}
+		size--;
+		return old.data;
 	}
 
 	@Override
